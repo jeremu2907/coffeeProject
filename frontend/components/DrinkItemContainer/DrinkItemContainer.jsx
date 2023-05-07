@@ -1,24 +1,9 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import React, {useState} from 'react';
+import { ScrollView} from 'react-native';
+import React from 'react';
 import DrinkItem from '../DrinkItem/DrinkItem';
-import {useWindowDimensions} from 'react-native';
 
 export default function DrinkItemContainer() 
 {
-    const {height, width} = useWindowDimensions();
-
-    // const styles = StyleSheet.create({
-    //     container: {
-    //         flex: 1,
-    //         // flexDirection: "column",
-    //         // flexWrap: "wrap",
-    //         // justifyContent: "space-between",
-    //         // alignItems: "flex-end",
-    //         // alignContent: "space-between",
-    //         flexGrow: 1
-    //     }
-    // });
-
     return(
         <ScrollView
             // style={styles.container}
@@ -29,7 +14,6 @@ export default function DrinkItemContainer()
                 alignItems: "flex-end",
             }}
             horizontal={true}
-            
         >
             <DrinkItem
                 drinkName = "Cold Brew"

@@ -9,7 +9,7 @@ export default function DrinkItem(props)
 
     const styles = StyleSheet.create({
         container: {
-            width: width / 2.2,
+            width: width / 2.21,
             height: height / 6.2,
             borderRadius: 10,
             marginRight: 15,
@@ -47,7 +47,7 @@ export default function DrinkItem(props)
         <View style={[styles.view, styles.shadowProp]} >
             <LinearGradient
                 // colors={['rgba(69, 48, 21,1)', '#262626','rgba(30,30,30,0.6)']}
-                colors={['rgba(0,0,0,0))', 'rgba(60,60,60,0.3)','rgba(60,60,60,0.3)']}
+                colors={['rgba(0,0,0,1))', 'rgba(60,60,60,0.3)','rgba(60,60,60,0.3)']}
                 style={styles.container}
                 start={{ x: 0.2, y: 1.2 }}
                 end={{ x: 0.4, y: 0 }}
