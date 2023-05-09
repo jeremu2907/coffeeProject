@@ -21,10 +21,12 @@ export default function TopBar()
         >
             <SearchBar
                 placeholder="Searching For a Drink?"
+                placeholderTextColor="#333333"
                 onChangeText={updateSearch}
                 value={search}
                 platform="default"
                 clearIcon={false}
+                searchIcon={false}
                 containerStyle={[SearchBoxContainer.container, SearchBoxContainer.shadowProp]}
                 inputContainerStyle={SearchBoxContainer.boxStyle}
                 inputStyle={SearchBoxContainer.textStyle}
@@ -49,15 +51,16 @@ const SearchBoxContainer = StyleSheet.create({
         margin: 0
     },
     boxStyle: {
-        backgroundColor: "#272727",
+        backgroundColor: "rgba(15,15,15,0.75)",
         height: 40,
         borderRadius: 15,
+        paddingLeft: 15
     },
     shadowProp: {
         shadowOffset: {width: 0,height: 6},
         shadowOpacity: 0.4,
         shadowColor: "#000000",
-        shadowRadius: 15
+        shadowRadius: 15,
     },
     textStyle: {
         color: "#ffffff"

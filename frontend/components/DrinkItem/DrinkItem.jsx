@@ -17,11 +17,6 @@ export default function DrinkItem(props)
             paddingRight: 15,
             justifyContent: 'space-evenly'
         },
-        textStyle: {
-            color: "#ffffff"
-        },
-        view: {
-        },
         shadowProp: {
             shadowOffset: {width: 5,height: 10},
             shadowOpacity: 0.7,
@@ -46,8 +41,8 @@ export default function DrinkItem(props)
     return(
         <View style={[styles.view, styles.shadowProp]} >
             <LinearGradient
-                // colors={['rgba(69, 48, 21,1)', '#262626','rgba(30,30,30,0.6)']}
-                colors={['rgba(0,0,0,1))', 'rgba(60,60,60,0.3)','rgba(60,60,60,0.3)']}
+                colors={['rgba(69, 50, 26,1)', '#262626','rgba(30,30,30,0.6)']}
+                // colors={['rgba(0,0,0,1))', 'rgba(60,60,60,0.3)','rgba(60,60,60,0.3)']}
                 style={styles.container}
                 start={{ x: 0.2, y: 1.2 }}
                 end={{ x: 0.4, y: 0 }}
