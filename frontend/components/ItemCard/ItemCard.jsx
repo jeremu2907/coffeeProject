@@ -2,10 +2,12 @@ import { StyleSheet, Text, View, TextInput } from 'react-native';
 import React, {useState} from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SelectList } from 'react-native-dropdown-select-list';
+import { useRoute } from '@react-navigation/native';
 
-export default function ItemCard(props)
+export default function ItemCard()
 {
     const [unit, setUnit] = React.useState("grams");
+    const route = useRoute();
 
     const styles = StyleSheet.create({
         container: {
@@ -71,13 +73,13 @@ export default function ItemCard(props)
     return(
         <LinearGradient
             // colors={['rgba(69, 50, 26,1)', '#262626','rgba(30,30,30,0.6)']}
-            colors={['rgba(54, 35, 11,1))','rgba(25,25,25,1)','rgba(15,15,15,0.9)']}
+            colors={['rgba(54, 35, 11,1))','rgba(25,25,25,1)','rgba(15,15,15,1)']}
             style={styles.container}
             start={{ x: 0.1, y: 1.5 }}
             end={{ x: 1.3, y: 0.2 }}
             locations={[0,0.6,0.95]}
         >
-            <Text style={styles.drinkName}>Drink Name</Text>
+            <Text style={styles.drinkName}>{route.params.drinkName}</Text>
 
             <View style={styles.detailFields}>
                 <Text style={styles.sectionHeading}>Calculate Ratio</Text>
@@ -138,27 +140,27 @@ export default function ItemCard(props)
 
             <View style={styles.detailFields}>
                 <Text style={styles.unitTextStyle}>Type</Text>
-                <Text style={styles.infoText}>ice, filtered</Text>
+                <Text style={styles.infoText}>{route.params.type}</Text>
             </View>
 
             <View style={styles.detailFields}>
                 <Text style={styles.unitTextStyle}>Water : Coffee</Text>
-                <Text style={styles.infoText}>12 : 1</Text>
+                <Text style={styles.infoText}>{route.params.wtcRatio}</Text>
             </View>
 
             <View style={styles.detailFields}>
                 <Text style={styles.unitTextStyle}>Milk : Coffee</Text>
-                <Text style={styles.infoText}>...</Text>
+                <Text style={styles.infoText}>{route.params.mtcRatio}</Text>
             </View>
 
             <View style={styles.detailFields}>
                 <Text style={styles.unitTextStyle}>Ingredients</Text>
-                <Text style={styles.infoText}>ice, water, coffee</Text>
+                <Text style={styles.infoText}>{route.params.ingredients}</Text>
             </View>
 
             <View>
                 <Text style={[styles.unitTextStyle, styles.noteArea]}>Notes</Text>
-                <Text style={[styles.infoText, styles.noteArea]}>this area is for notes</Text>
+                <Text style={[styles.infoText, styles.noteArea]}>{route.params.notes}</Text>
             </View>
 
         </LinearGradient>

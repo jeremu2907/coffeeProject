@@ -1,35 +1,15 @@
 import React from 'react'
-import { StatusBar } from 'expo-status-bar';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import TopBar from './components/TopBar/TopBar';
+import { SafeAreaView, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import DrinkItemContainer from './components/DrinkItemContainer/DrinkItemContainer';
-import ItemCard from './components/ItemCard/ItemCard';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { ItemCardScreen } from './screens/ItemCard';
+import {HomeScreen} from './screens/HomeScreen'
+import { StatusBar } from 'expo-status-bar';
+import TopBar from './components/TopBar/TopBar';
+
 const Stack = createNativeStackNavigator();
-
-const HomeScreen = ({navigation}) => 
-{
-    return(
-        <SafeAreaView style={styles.container}>
-            <StatusBar style="light" />
-            <TopBar />
-
-            {/* <ItemCard /> */}
-            <View style={styles.bottomLine}>
-                <Text style={styles.titleTextStyle}>My Drinks</Text>
-            </View>
-            <DrinkItemContainer />
-
-            <View style={styles.bottomLine}>
-                <Text style={styles.titleTextStyle}>Be Insipred</Text>
-            </View>
-            <DrinkItemContainer />
-        </SafeAreaView>
-    );
-};
 
 const transparentTheme = {
     ...DefaultTheme,
@@ -49,17 +29,23 @@ export default function App() {
                 end={{ x: 0, y: 1 }}
                 locations={[0, 0.4, 0.9]}
             >
-                <Stack.Navigator
-                    screenOptions={{
-                        headerShown: false //Hides screen title
-                    }}
-                >
-                <Stack.Screen
-                    name="Home"
-                    component={HomeScreen}  
-                />
-                
-            </Stack.Navigator>
+                <SafeAreaView style={styles.container}>
+                    <StatusBar style="light" />
+                    <TopBar />
+                    <Stack.Navigator screenOptions={{ headerShown: false }} >{/*Hides screen title*/}
+
+                        <Stack.Screen
+                            name="Home"
+                            component={HomeScreen}  
+                        />
+
+                        <Stack.Screen
+                            name="ItemCard"
+                            component={ItemCardScreen}  
+                        />
+                    
+                    </Stack.Navigator>
+                </SafeAreaView>
             </LinearGradient>
         </NavigationContainer>
   );
@@ -73,17 +59,5 @@ const styles = StyleSheet.create({
     },
     paddingDev: {
         padding: 10
-    },
-    titleTextStyle: {
-        color: "white",
-        fontSize: 20,
-        fontWeight: "bold"
-    },
-    bottomLine: {
-        paddingTop: 10,
-        borderBottomColor: 'white',
-        borderBottomWidth: 1,
-        paddingBottom: 10,
-        marginBottom: 20
     }
 });

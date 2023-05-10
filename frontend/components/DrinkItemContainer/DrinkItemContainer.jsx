@@ -6,7 +6,6 @@ export default function DrinkItemContainer()
 {
     return(
         <ScrollView
-            // style={styles.container}
             contentContainerStyle={{
                 flexDirection: "column",
                 flexWrap: "wrap",
@@ -14,6 +13,7 @@ export default function DrinkItemContainer()
                 alignItems: "flex-end",
             }}
             horizontal={true}
+            showsHorizontalScrollIndicator={false}
         >
             <DrinkItem
                 drinkName = "Cold Brew"
