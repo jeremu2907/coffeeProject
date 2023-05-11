@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { useRoute } from '@react-navigation/native';
+import PopScreenBtn from '../Buttons/PopScreenBtn';
 
 export default function ItemCard()
 {
@@ -27,7 +28,8 @@ export default function ItemCard()
         drinkName: {
             color: "white",
             fontSize: 30,
-            fontWeight: "bold"
+            fontWeight: "bold",
+            marginRight: "auto"
         },
         detailFields: {
             flexDirection: "row",
@@ -79,7 +81,10 @@ export default function ItemCard()
             end={{ x: 1.3, y: 0.2 }}
             locations={[0,0.6,0.95]}
         >
-            <Text style={styles.drinkName}>{route.params.drinkName}</Text>
+            <View style={styles.detailFields}>
+                <PopScreenBtn />
+                <Text style={styles.drinkName}>{route.params.drinkName}</Text>
+            </View>
 
             <View style={styles.detailFields}>
                 <Text style={styles.sectionHeading}>Calculate Ratio</Text>

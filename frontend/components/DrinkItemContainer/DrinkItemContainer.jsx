@@ -1,9 +1,48 @@
-import { ScrollView} from 'react-native';
-import React from 'react';
+import { ScrollView, useWindowDimensions } from 'react-native';
+import React, { useState, useEffect} from 'react';
 import DrinkItem from '../DrinkItem/DrinkItem';
 
-export default function DrinkItemContainer() 
+export default function DrinkItemContainer(props) 
 {
+    const [items, setItems] = useState([]);
+    const {height, width} = useWindowDimensions();
+
+    const numTypetoString = (types) => 
+    {
+        const DrinkType = {
+            "1" : "hot",
+            "2" : "cold",
+            "3" : "espresso",
+            "4" : "milk",
+            "5" : "filtered",
+            "6" : "other"
+        };
+
+        for(i in types)
+        {
+            types[i] = DrinkType[types[i]];
+        }
+        return types.join(", ");
+    };
+    
+    useEffect(() => 
+    {
+        console.log(props.url)
+        fetch(props.url)
+            .then(res => 
+                {
+                    return res.json();
+                })
+            .then(data => 
+                {
+                    setItems(data);
+                })
+            .then(console.log(items))
+            .catch(err => {
+                console.log(err);
+            })
+    },[]);
+
     return(
         <ScrollView
             contentContainerStyle={{
@@ -11,40 +50,22 @@ export default function DrinkItemContainer()
                 flexWrap: "wrap",
                 justifyContent: "space-between",
                 alignItems: "flex-end",
+                maxHeight: height / 3,
             }}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
         >
-            <DrinkItem
-                drinkName = "Cold Brew"
-                type = "cold"
-                wtcRatio = "10:1"
-                mtcRatio = "..."
-            />
-            <DrinkItem
-                drinkName = "Latte"
-                type = "hot, espresso"
-                wtcRatio = "1.5:1"
-                mtcRatio = "4:1"
-            />
-            <DrinkItem
-                drinkName = "Filtered Brew"
-                type = "hot, cold"
-                wtcRatio = "10:1"
-                mtcRatio = "..."
-            />
-            <DrinkItem
-                drinkName = "Iced Mocha"
-                type = "cold, espresso"
-                wtcRatio = "1:1"
-                mtcRatio = "3.5:1"
-            />
-            <DrinkItem
-                drinkName = "Americano"
-                type = "espresso"
-                wtcRatio = "1.5:1"
-                mtcRatio = "..."
-            />
+            {items.map(item => {
+                return(
+                    <DrinkItem
+                        key = {item._id}
+                        drinkName = {item.name}
+                        type = {numTypetoString(item.type)}
+                        wtcRatio = {item.wtc_ratio}
+                        mtcRatio = {(item.mtc_ratio)? item.mtc_ratio:"..."}
+                    />
+                )
+            })}
         </ScrollView>
     )
 }

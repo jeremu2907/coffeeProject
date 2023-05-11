@@ -11,12 +11,12 @@ export const HomeScreen = ({navigation}) =>
             <View style={styles.bottomLine}>
                 <Text style={styles.titleTextStyle}>My Drinks</Text>
             </View>
-                <DrinkItemContainer/>
+                <DrinkItemContainer url="https://cffee.jeremynguyen.tech/UserCoffee/getAllMyItems?user=Jeremy%20Nguyen"/>
 
             <View style={styles.bottomLine}>
                 <Text style={styles.titleTextStyle}>Be Insipred</Text>
             </View>
-            <DrinkItemContainer />
+                <DrinkItemContainer url="https://cffee.jeremynguyen.tech/suggestType?type=1" />
         </View>
     );
 };

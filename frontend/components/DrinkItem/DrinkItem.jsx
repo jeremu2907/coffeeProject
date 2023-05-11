@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import React, {useState} from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import {useWindowDimensions} from 'react-native';
@@ -9,6 +9,11 @@ export default function DrinkItem(props)
     const navigation = useNavigation();
     const {height, width} = useWindowDimensions();
 
+    const adjustTypeLen = (str) =>
+    {
+            return str.substr(0, 12) + ((str.length > 12)? " ..." : "");
+    }
+
     const styles = StyleSheet.create({
         container: {
             width: width / 2.21,
@@ -17,7 +22,7 @@ export default function DrinkItem(props)
             marginRight: 15,
             paddingLeft: 15,
             paddingRight: 15,
-            justifyContent: 'space-evenly'
+            justifyContent: 'space-evenly',
         },
         drinkName: {
             color: "white",
@@ -42,8 +47,8 @@ export default function DrinkItem(props)
             }}
         >
             <LinearGradient
-                // colors={['rgba(69, 50, 26,1)', '#262626','rgba(30,30,30,0.6)']}
-                colors={['rgba(0,0,0,1))', 'rgba(60,60,60,0.3)','rgba(60,60,60,0.3)']}
+                colors={['rgba(69, 50, 26,0.7)', 'rgba(38, 38, 38, 0.5)','rgba(30,30,30,0.6)']}
+                // colors={['rgba(0,0,0,1))', 'rgba(60,60,60,0.3)','rgba(60,60,60,0.3)']}
                 style={styles.container}
                 start={{ x: 0.2, y: 1.2 }}
                 end={{ x: 0.4, y: 0 }}
@@ -52,7 +57,7 @@ export default function DrinkItem(props)
                 <Text style={styles.drinkName}>{props.drinkName}</Text>
                 <View style={styles.detailFields}>
                     <Text style={styles.detailText}>Type</Text>
-                    <Text style={styles.detailText}>{props.type}</Text>
+                    <Text style={styles.detailText}>{adjustTypeLen(props.type)}</Text>
                 </View>
                 <View style={styles.detailFields}>
                     <Text style={styles.detailText}>Water Ratio</Text>
