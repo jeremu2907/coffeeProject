@@ -3,12 +3,31 @@ import React, {useState} from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SelectList } from 'react-native-dropdown-select-list';
 import { useRoute } from '@react-navigation/native';
+
 import PopScreenBtn from '../Buttons/PopScreenBtn';
+import { enterCoffee, enterLiquidCoffee, enterMilk } from './conversions';
 
 export default function ItemCard()
 {
     const [unit, setUnit] = React.useState("grams");
+    const [clear, setClear] = React.useState(false);
+    const [coffee, setCoffee] = React.useState("");
+    const [liquidCoffee, setLiquidCoffee] = React.useState("");
+    const [milk, setMilk] = React.useState("");
     const route = useRoute();
+
+    let [wRatio, cRatio] = route.params.wtcRatio.split(':');
+    let [mRatio, lcRatio] = route.params.mtcRatio.split(':');
+
+    wRatio = parseFloat(wRatio);
+    cRatio = parseFloat(cRatio);
+    mRatio = parseFloat(mRatio);
+    lcRatio = parseFloat(lcRatio);
+
+    const setC = (e) => {setCoffee(e)};
+    const setL = (e) => {setLiquidCoffee(e)};
+    const setM = (e) => {setMilk(e)};
+
 
     const styles = StyleSheet.create({
         container: {
@@ -111,33 +130,79 @@ export default function ItemCard()
             <View style={styles.detailFields}>
                 <Text style={styles.unitTextStyle}>Coffee</Text>
                 <TextInput
-                    placeholder="amount"
+                    placeholder="0.0"
+                    value={coffee}
                     style={styles.textInput}
                     keyboardType='numeric'
                     placeholderTextColor={"#555555"}
                     returnKeyType='done'
+                    onChangeText={i => {
+                        setCoffee(i);
+                        setLiquidCoffee("");
+                        setMilk("");
+                        enterCoffee(
+                            parseFloat(i),
+                            cRatio,
+                            wRatio,
+                            lcRatio,
+                            mRatio,
+                            setL,
+                            setM
+                        )
+                    }}
                 />
             </View>
 
             <View style={styles.detailFields}>
                 <Text style={styles.unitTextStyle}>Liquid Coffee</Text>
                 <TextInput
-                    placeholder="amount"
+                    placeholder="0.0"
+                    value={liquidCoffee}
                     style={styles.textInput}
                     keyboardType='numeric'
                     placeholderTextColor={"#555555"}
                     returnKeyType='done'
+                    onChangeText={i => {
+                        setLiquidCoffee(i);
+                        setCoffee("");
+                        setMilk("");
+                        enterLiquidCoffee(
+                            parseFloat(i),
+                            cRatio,
+                            wRatio,
+                            lcRatio,
+                            mRatio,
+                            setC,
+                            setM
+                        )
+                    }}
                 />
             </View>
 
             <View style={styles.detailFields}>
                 <Text style={styles.unitTextStyle}>Milk</Text>
                 <TextInput
-                    placeholder="amount"
+                    placeholder="0.0"
+                    value={milk}
                     style={styles.textInput}
                     keyboardType='numeric'
                     placeholderTextColor={"#555555"}
                     returnKeyType='done'
+                    editable={isNaN(mRatio) ? false : true}
+                    onChangeText={i => {
+                        setMilk(i);
+                        setCoffee("");
+                        setLiquidCoffee("");
+                        enterMilk(
+                            parseFloat(i),
+                            cRatio,
+                            wRatio,
+                            lcRatio,
+                            mRatio,
+                            setC,
+                            setL
+                        )
+                    }}
                 />
             </View>
 
