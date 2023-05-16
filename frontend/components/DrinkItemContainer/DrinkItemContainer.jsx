@@ -62,10 +62,16 @@ export default function DrinkItemContainer(props)
                         drinkName = {item.name}
                         type = {numTypetoString(item.type)}
                         wtcRatio = {item.wtc_ratio}
-                        mtcRatio = {(item.mtc_ratio)? item.mtc_ratio:"..."}
+                        mtcRatio = {(item.mtc_ratio)? itaem.mtc_ratio:"..."}
                     />
                 )
             })}
+            {/* <DrinkItem
+                drinkName = "Latte"
+                type = {numTypetoString(['1','2','3'])}
+                wtcRatio = "12:1"
+                mtcRatio = "3:1"
+            /> */}
         </ScrollView>
     )
 }

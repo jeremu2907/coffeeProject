@@ -5,12 +5,12 @@ import { SelectList } from 'react-native-dropdown-select-list';
 import { useRoute } from '@react-navigation/native';
 
 import PopScreenBtn from '../Buttons/PopScreenBtn';
-import { enterCoffee, enterLiquidCoffee, enterMilk } from './conversions';
+import { enterCoffee, enterLiquidCoffee, enterMilk, convert } from './conversions';
+import EditItemBtn from '../Buttons/EditItemBtn';
 
 export default function ItemCard()
 {
     const [unit, setUnit] = React.useState("grams");
-    const [clear, setClear] = React.useState(false);
     const [coffee, setCoffee] = React.useState("");
     const [liquidCoffee, setLiquidCoffee] = React.useState("");
     const [milk, setMilk] = React.useState("");
@@ -103,13 +103,28 @@ export default function ItemCard()
             <View style={styles.detailFields}>
                 <PopScreenBtn />
                 <Text style={styles.drinkName}>{route.params.drinkName}</Text>
+                <EditItemBtn />
             </View>
 
             <View style={styles.detailFields}>
                 <Text style={styles.sectionHeading}>Calculate Ratio</Text>
                 <View style={{width: 150}}>
                     <SelectList
-                        setSelected={val => setUnit(val)}
+                        setSelected={val =>
+                                        {
+                                            if(val != unit)
+                                            {
+                                                setUnit(val)
+                                                convert(coffee,
+                                                    liquidCoffee,
+                                                    milk,
+                                                    val,
+                                                    setC,
+                                                    setL,
+                                                    setM);
+                                            }
+                                        }
+                                    }
                         data={[
                             {key: '1', value: 'grams'},
                             {key: '2', value: 'oz'}
