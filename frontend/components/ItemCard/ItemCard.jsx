@@ -162,6 +162,7 @@ export default function ItemCard()
                     value={formatString(coffee)}
                     style={styles.textInput}
                     keyboardType='numeric'
+                    keyboardAppearance='dark'
                     placeholderTextColor={"#555555"}
                     returnKeyType='done'
                     onChangeText={i => {
@@ -188,6 +189,7 @@ export default function ItemCard()
                     value={formatString(liquidCoffee)}
                     style={styles.textInput}
                     keyboardType='numeric'
+                    keyboardAppearance='dark'
                     placeholderTextColor={"#555555"}
                     returnKeyType='done'
                     onChangeText={i => {
@@ -214,6 +216,7 @@ export default function ItemCard()
                     value={formatString(milk)}
                     style={styles.textInput}
                     keyboardType='numeric'
+                    keyboardAppearance='dark'
                     placeholderTextColor={"#555555"}
                     returnKeyType='done'
                     editable={isNaN(mRatio) ? false : true}
