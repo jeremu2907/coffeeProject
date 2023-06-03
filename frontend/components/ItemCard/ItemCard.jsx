@@ -28,6 +28,18 @@ export default function ItemCard()
     const setL = (e) => {setLiquidCoffee(e)};
     const setM = (e) => {setMilk(e)};
 
+    const formatString = (s) =>
+        {
+            if(!s) return;
+
+            let decimals = s.split('.');
+            if(decimals[1])
+            {
+                return decimals[0]+ "." + decimals[1].substring(0,2);
+            }
+            return s
+        }
+
 
     const styles = StyleSheet.create({
         container: {
@@ -115,7 +127,8 @@ export default function ItemCard()
                                             if(val != unit)
                                             {
                                                 setUnit(val)
-                                                convert(coffee,
+                                                convert(
+                                                    coffee,
                                                     liquidCoffee,
                                                     milk,
                                                     val,
@@ -146,7 +159,7 @@ export default function ItemCard()
                 <Text style={styles.unitTextStyle}>Coffee</Text>
                 <TextInput
                     placeholder="0.0"
-                    value={coffee}
+                    value={formatString(coffee)}
                     style={styles.textInput}
                     keyboardType='numeric'
                     placeholderTextColor={"#555555"}
@@ -172,7 +185,7 @@ export default function ItemCard()
                 <Text style={styles.unitTextStyle}>Liquid Coffee</Text>
                 <TextInput
                     placeholder="0.0"
-                    value={liquidCoffee}
+                    value={formatString(liquidCoffee)}
                     style={styles.textInput}
                     keyboardType='numeric'
                     placeholderTextColor={"#555555"}
@@ -198,7 +211,7 @@ export default function ItemCard()
                 <Text style={styles.unitTextStyle}>Milk</Text>
                 <TextInput
                     placeholder="0.0"
-                    value={milk}
+                    value={formatString(milk)}
                     style={styles.textInput}
                     keyboardType='numeric'
                     placeholderTextColor={"#555555"}

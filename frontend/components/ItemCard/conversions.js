@@ -5,10 +5,11 @@ const factor = {
 
 const convert = (c, l, m, unit, setC, setL, setM) => 
 {
+    //16 digits kind of fixes the rounding issue
     if(factor[unit] && c && l)
     {
-        setC((parseFloat(c) * factor[unit]).toFixed(2).toString());
-        setL((parseFloat(l) * factor[unit]).toFixed(2).toString());
+        setC((parseFloat(c) * factor[unit]).toFixed(16).toString());
+        setL((parseFloat(l) * factor[unit]).toFixed(16).toString());
     }
     else
     {
@@ -16,7 +17,7 @@ const convert = (c, l, m, unit, setC, setL, setM) =>
     }
     if(m)
     {
-        setM((parseFloat(m) * factor[unit]).toFixed(2).toString());
+        setM((parseFloat(m) * factor[unit]).toFixed(16).toString());
     }
 }
 
