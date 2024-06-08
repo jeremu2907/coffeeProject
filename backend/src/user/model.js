@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../db';
+import sequelize from '../db.js';
 
-const User = sequelize.define('Users', {
+const model = sequelize.define('Users', {
     id: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -35,4 +35,4 @@ const User = sequelize.define('Users', {
     },
 });
 
-export default User;
+export default model;
