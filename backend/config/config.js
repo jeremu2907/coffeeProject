@@ -1,4 +1,3 @@
-const fs = require('fs');
 require('dotenv').config();
 
 module.exports = {
@@ -9,5 +8,9 @@ module.exports = {
         host: process.env.DB_HOST,
         port: 6543,
         dialect: 'postgres',
-    }
+    },
+    username: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    host: process.env.DB_HOST,
 };

@@ -10,19 +10,19 @@ module.exports = {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 autoIncrement: true,
-                primaryKey: true
+                primaryKey: true,
             },
             name: {
                 type: DataTypes.STRING,
                 unique: true,
             },
             type: {
-                type: DataTypes.STRING
-            }
-        })
+                type: DataTypes.STRING,
+            },
+        });
     },
 
     async down(queryInterface, Sequelize) {
         await queryInterface.dropTable('Ingredients');
-    }
+    },
 };

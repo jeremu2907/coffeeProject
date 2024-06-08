@@ -1,38 +1,38 @@
-const { DataTypes } = require('sequelize');
-import sequelize from "../db";
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../db';
 
 const User = sequelize.define('Users', {
     id: {
         type: DataTypes.UUID,
         allowNull: false,
         defaultValue: DataTypes.UUIDV4,
-        primaryKey: true
+        primaryKey: true,
     },
     username: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
     },
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     pfp_url: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
     },
     followers: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
         validate: {
-            min: 0
-        }
-    }
+            min: 0,
+        },
+    },
 });
 
 export default User;
