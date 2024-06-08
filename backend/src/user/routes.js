@@ -1,7 +1,9 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
+
 import User from './model.js';
 import { Op } from 'sequelize';
+import { generateToken } from '#utils/token.js';
 
 const router = express.Router();
 
@@ -57,11 +59,11 @@ router.post('/signin', async (req, res) => {
         });
         
         if (!(await bcrypt.compare(data.password, user.password))) {
-            res.status(401).send('Invalid credentials');
+            res.status(403).send('Invalid credentials');
             return;
         }
 
-        res.send(user);
+        res.send(generateToken());
     } catch (err) {
         console.error(err);
         res.status(404).send('User not found');
