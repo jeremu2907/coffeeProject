@@ -1,5 +1,0 @@
-CREATE TABLE ingredients (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(100) UNIQUE NOT NULL,
-    type VARCHAR(100)
-);
