@@ -7,6 +7,9 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "dev": "npx nodemon ./src/index.js",
+        "create-migration": "npx sequelize-cli migration:generate",
+        "migrate": "npx sequelize-cli db:migrate",
+        "undo-migrate": "npx sequelize-cli db:migrate:undo",
         "lint": "npx eslint",
         "lint-fix": "npm run lint -- --fix"
     },
@@ -16,6 +19,9 @@
         ],
         "#utils/*": [
             "./src/utils/*"
+        ],
+        "#model/*": [
+            "./src/*/model.js"
         ]
     },
     "author": "",

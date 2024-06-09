@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../db';
 
-const Ingredients = sequelize.define('Users', {
+const Ingredients = sequelize.define('Ingredients', {
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -11,9 +11,6 @@ const Ingredients = sequelize.define('Users', {
     name: {
         type: DataTypes.STRING,
         unique: true,
-    },
-    type: {
-        type: DataTypes.STRING,
     },
 });
 

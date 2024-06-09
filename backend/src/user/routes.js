@@ -1,8 +1,8 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
+import { Op } from 'sequelize';
 
 import User from './model.js';
-import { Op } from 'sequelize';
 import { generateToken } from '#utils/token.js';
 
 const router = express.Router();
