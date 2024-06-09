@@ -40,7 +40,6 @@ export default function ItemCard()
             return s
         }
 
-
     const styles = StyleSheet.create({
         container: {
             borderRadius:30,

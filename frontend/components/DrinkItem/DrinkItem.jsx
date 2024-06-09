@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import React, {useState} from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import {useWindowDimensions} from 'react-native';
