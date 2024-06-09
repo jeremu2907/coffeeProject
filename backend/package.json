@@ -20,8 +20,14 @@
         "#utils/*": [
             "./src/utils/*"
         ],
-        "#model/*": [
+        "#models/*": [
             "./src/*/model.js"
+        ],
+        "#routes/*": [
+            "./src/*/routes.js"
+        ],
+        "#sql": [
+            "./src/db.js"
         ]
     },
     "author": "",

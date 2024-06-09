@@ -1,5 +1,6 @@
 import express from 'express';
-import UserRoutes from './user/routes.js';
+import UserRoutes from '#routes/user';
+import RecipeRoutes from '#routes/recipe';
 
 const app = express();
 const PORT = 8000;
@@ -10,6 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/user', UserRoutes);
+app.use('/recipe', RecipeRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

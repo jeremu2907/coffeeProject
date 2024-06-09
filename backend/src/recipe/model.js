@@ -1,40 +1,40 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../db';
+import sequelize from '#sql';
 
-import User from '#model/user';
-import { UNITS } from '#utils/dbValues.js';
+import User from '#models/user';
+import { UNITS, BREWMETHOD, ROASTLEVEL } from '#utils/dbValues.js';
 
 const UserRecipes = sequelize.define('User_Recipes', {
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
-        primaryKey: true, 
+        primaryKey: true,
     },
     user_id: {
         type: DataTypes.UUID,
         references: {
-            model: 'Users'
+            model: 'Users',
         },
         allowNull: false,
         onDelete: 'CASCADE',
     },
     title: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     subtitle: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
     },
     description: {
         type: DataTypes.TEXT,
-        allowNull: true
+        allowNull: true,
     },
     cover_url: {
         type: DataTypes.STRING,
-        allowNull: true
-    }
+        allowNull: true,
+    },
 });
 
 const RecipeIngredients = sequelize.define('Recipe_Ingredients', {
@@ -42,12 +42,12 @@ const RecipeIngredients = sequelize.define('Recipe_Ingredients', {
         type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
-        primaryKey: true, 
+        primaryKey: true,
     },
     recipe_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'User_Recipes'
+            model: 'User_Recipes',
         },
         allowNull: false,
         onDelete: 'CASCADE',
@@ -55,33 +55,33 @@ const RecipeIngredients = sequelize.define('Recipe_Ingredients', {
     ingredient_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'Ingredients'
+            model: 'Ingredients',
         },
         allowNull: true,
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
     },
     ingredient_amount: {
         type: DataTypes.INTEGER,
-        allowNull: true
+        allowNull: true,
     },
     ingredient_unit: {
         type: DataTypes.STRING,
         allowNull: true,
-        values: UNITS
+        values: UNITS,
     },
-})
+});
 
 const RecipeCoffees = sequelize.define('Recipe_Coffees', {
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         autoIncrement: true,
-        primaryKey: true, 
+        primaryKey: true,
     },
     recipe_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'User_Recipes'
+            model: 'User_Recipes',
         },
         allowNull: false,
         onDelete: 'CASCADE',
@@ -89,32 +89,32 @@ const RecipeCoffees = sequelize.define('Recipe_Coffees', {
     brew_method: {
         type: DataTypes.STRING,
         values: BREWMETHOD,
-        allowNull: false
+        allowNull: false,
     },
     coffee_roast_level: {
         type: DataTypes.STRING,
         values: ROASTLEVEL,
-        allowNull: false
+        allowNull: false,
     },
     ratio_liquid_to_dry: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
     },
     bean_weight: {
         type: DataTypes.INTEGER,
-        description: "in grams",
-        allowNull: true
-    }
-})
+        description: 'in grams',
+        allowNull: true,
+    },
+});
 
 User.hasMany(UserRecipes, {
     foreignKey: 'user_id',
-    onDelete: 'CASCADE'
-})
+    onDelete: 'CASCADE',
+});
 UserRecipes.belongsTo(User, {
     foreignKey: 'user_id',
-    onDelete: 'CASCADE'
-})
+    onDelete: 'CASCADE',
+});
 
 UserRecipes.hasMany(RecipeIngredients, {
     foreignKey: 'recipe_id',
@@ -134,4 +134,4 @@ RecipeCoffees.belongsTo(UserRecipes, {
     onDelete: 'CASCADE',
 });
 
-export { UserRecipes, RecipeIngredients };
+export { UserRecipes, RecipeIngredients, RecipeCoffees };
