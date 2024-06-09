@@ -18,10 +18,10 @@ router.post('/signup', async (req, res) => {
         const existingUser = await User.findOne({
             where: {
                 [Op.or]: [
-                    {email: data.email},
-                    {username: data.username}
-                ]
-            }
+                    { email: data.email },
+                    { username: data.username },
+                ],
+            },
         });
         if (existingUser != null) {
             res.status(400).send('Email or username already taken');
@@ -33,7 +33,7 @@ router.post('/signup', async (req, res) => {
             username: data.username,
             password: hashedPassword,
             email: data.email,
-        })
+        });
         res.send(req.body);
     } catch (err) {
         console.error(err);
@@ -46,18 +46,18 @@ router.post('/signin', async (req, res) => {
     const data = req.body;
     if (!(data.user && data.password)) {
         res.status(400).send('Missing credentials');
-        return
+        return;
     }
     try {
         const user = await User.findOne({
             where: {
                 [Op.or]: [
-                    {email: data.user},
-                    {username: data.user}
+                    { email: data.user },
+                    { username: data.user },
                 ],
-            }
+            },
         });
-        
+
         if (!(await bcrypt.compare(data.password, user.password))) {
             res.status(403).send('Invalid credentials');
             return;
@@ -69,6 +69,6 @@ router.post('/signin', async (req, res) => {
         res.status(404).send('User not found');
     }
     return;
-})
+});
 
 export default router;

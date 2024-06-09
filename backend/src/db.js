@@ -5,9 +5,9 @@ const sequelize = new Sequelize(
     {
         ...config.development,
         define: {
-            timestamps: false
+            timestamps: false,
         },
-    }
+    },
 );
 
 export default sequelize;
