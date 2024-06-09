@@ -1,26 +1,26 @@
 export const UNITS = [
-    'tsp', // teaspoon
-    'Tbsp', // tablespoon
     'cup', // cup
-    'ml', // milliliter
-    'l', // liter
+    'fl oz', // fluid ounce
     'g', // gram
     'kg', // kilogram
-    'oz', // ounce
-    'fl oz', // fluid ounce
+    'l', // liter
     'mg', // milligram
+    'ml', // milliliter
+    'ounce', // ounce
     'piece', // piece
     'slice', // slice
+    'Tbsp', // tablespoon
+    'tsp', // teaspoon
 ]
 
 export const BREWMETHOD = [
-    'espresso',
-    'pour over',
     'cold brew',
     'drip',
+    'espresso',
     'French press',
-    'moka',
-    'other'
+    'moka pot',
+    'other',
+    'pour over',
 ]
 
 export const ROASTLEVEL = [
