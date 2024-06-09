@@ -25,6 +25,8 @@ export default function TopBar()
                 onChangeText={updateSearch}
                 value={search}
                 platform="default"
+                keyboardAppearance="dark"
+                returnKeyType="done"
                 clearIcon={false}
                 searchIcon={false}
                 containerStyle={[SearchBoxContainer.container, SearchBoxContainer.shadowProp]}
