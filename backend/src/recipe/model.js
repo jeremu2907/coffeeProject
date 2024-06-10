@@ -6,7 +6,7 @@ import { UNITS, BREWMETHOD, ROASTLEVEL } from '#utils/dbValues.js';
 
 const UserRecipes = sequelize.define('User_Recipes', {
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -39,7 +39,7 @@ const UserRecipes = sequelize.define('User_Recipes', {
 
 const RecipeIngredients = sequelize.define('Recipe_Ingredients', {
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
@@ -73,7 +73,7 @@ const RecipeIngredients = sequelize.define('Recipe_Ingredients', {
 
 const RecipeCoffees = sequelize.define('Recipe_Coffees', {
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,

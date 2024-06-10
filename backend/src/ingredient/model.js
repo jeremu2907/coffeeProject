@@ -11,6 +11,7 @@ const model = sequelize.define('Ingredients', {
     name: {
         type: DataTypes.STRING,
         unique: true,
+        allowNull: false,
     },
 });
 
