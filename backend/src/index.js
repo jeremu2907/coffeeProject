@@ -3,24 +3,28 @@ import config from '#config';
 
 // Sync the model with the database
 async function asyncModels() {
+    // eslint-disable-next-line no-undef
     if (!config.prod && process.argv.includes('--synchronize')) {
         console.log('Models synchronization.');
         try {
-            await sequelize.sync({ alter: true }); // Use { force: true } to drop tables and re-create them if they already exist
+            await sequelize.sync({ alter: true });
             console.log('Models synchronized successfully.');
         } catch (error) {
             console.error('Error synchronizing models:', error);
         } finally {
-            await sequelize.close(); // Close the Sequelize connection when done
+            await sequelize.close();
+            // eslint-disable-next-line no-undef
             process.exit();
         }
     }
 
+    // eslint-disable-next-line no-undef
     if (process.argv.includes('--no-synchronization')) {
-        return
+        return;
     } else {
-        console.log("Did not migrate. Pass the --synchronize flag to confirm.")
-        process.exit()
+        console.log('Did not migrate. Pass the --synchronize flag to confirm.');
+        // eslint-disable-next-line no-undef
+        process.exit();
     }
 }
 
