@@ -89,11 +89,23 @@ const RecipeCoffees = sequelize.define('Recipe_Coffees', {
     brew_method: {
         type: DataTypes.STRING,
         values: BREWMETHOD,
+        validate: {
+            isIn: {
+                args: [BREWMETHOD],
+                msg: 'Invalid brew method'
+            }
+        },
         allowNull: false,
     },
     coffee_roast_level: {
         type: DataTypes.STRING,
         values: ROASTLEVEL,
+        validate: {
+            isIn: {
+                args: [ROASTLEVEL],
+                msg: 'Invalid roast level'
+            }
+        },
         allowNull: false,
     },
     ratio_liquid_to_dry: {
@@ -101,9 +113,16 @@ const RecipeCoffees = sequelize.define('Recipe_Coffees', {
         allowNull: true,
     },
     bean_weight: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         description: 'in grams',
         allowNull: true,
+        validate: {
+            nonNegative(val) {
+                if (parseFloat(val) < 0) {
+                    throw new Error('Bean weight must be non-negative or empty');
+                }
+            }
+        },
     },
 });
 
