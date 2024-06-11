@@ -86,10 +86,8 @@ router.post('/create', verifyToken, async (req, res) => {
     } catch (err) {
         await transaction.rollback()
         if (err instanceof Sequelize.AggregateError) {
-            console.error(err.errors[0]);
             res.status(400).send(err.errors[0].errors.errors[0].message);
         } else {
-            console.error(err);
             res.sendStatus(500);
         }
     }
