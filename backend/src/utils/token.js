@@ -7,7 +7,7 @@ export function generateToken(userId) {
     return jwt.sign(
         { userId: userId },
         config.jwt_secret,
-        { expiresIn: '1w' },
+        { expiresIn: '10 days' },
     );
 }
 
@@ -17,7 +17,6 @@ export function verifyToken(req, res, next) {
     if (!token) {
         return res.status(401).json({ message: 'Token not provided' });
     }
-
     jwt.verify(token, config.jwt_secret, (err, decoded) => {
         if (err) {
             return res.status(403).json({ message: 'Invalid token' });

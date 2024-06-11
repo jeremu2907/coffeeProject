@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
-import { sequelize } from '../db';
+import sequelize from '#sql';
 
-const Ingredients = sequelize.define('Users', {
+const model = sequelize.define('Ingredients', {
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -11,10 +11,8 @@ const Ingredients = sequelize.define('Users', {
     name: {
         type: DataTypes.STRING,
         unique: true,
-    },
-    type: {
-        type: DataTypes.STRING,
+        allowNull: false,
     },
 });
 
-export default Ingredients;
+export default model;
