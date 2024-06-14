@@ -1,7 +1,8 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '#sql';
+import { RecipeIngredients } from '#models/recipe';
 
-const model = sequelize.define('Ingredients', {
+const model = sequelize.define('ingredients', {
     id: {
         type: DataTypes.INTEGER,
         allowNull: false,
@@ -14,5 +15,14 @@ const model = sequelize.define('Ingredients', {
         allowNull: false,
     },
 });
+
+model.hasMany(RecipeIngredients, {
+    foreignKey: 'ingredient_id',
+    onDelete: 'CASCADE',
+});
+RecipeIngredients.belongsTo(model, {
+    foreignKey: 'ingredient_id',
+    onDelete: 'CASCADE',
+})
 
 export default model;

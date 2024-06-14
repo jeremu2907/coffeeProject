@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '#sql';
 
-const model = sequelize.define('Users', {
+const model = sequelize.define('users', {
     id: {
         type: DataTypes.UUID,
         allowNull: false,

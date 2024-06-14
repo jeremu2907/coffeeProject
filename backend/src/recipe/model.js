@@ -4,7 +4,7 @@ import sequelize from '#sql';
 import User from '#models/user';
 import { UNITS, BREWMETHOD, ROASTLEVEL } from '#utils/dbValues.js';
 
-const UserRecipes = sequelize.define('User_Recipes', {
+const UserRecipes = sequelize.define('user_recipes', {
     id: {
         type: DataTypes.BIGINT,
         allowNull: false,
@@ -14,7 +14,7 @@ const UserRecipes = sequelize.define('User_Recipes', {
     user_id: {
         type: DataTypes.UUID,
         references: {
-            model: 'Users',
+            model: 'users',
         },
         allowNull: false,
         onDelete: 'CASCADE',
@@ -41,7 +41,7 @@ const UserRecipes = sequelize.define('User_Recipes', {
     }
 });
 
-const RecipeIngredients = sequelize.define('Recipe_Ingredients', {
+const RecipeIngredients = sequelize.define('recipe_ingredients', {
     id: {
         type: DataTypes.BIGINT,
         allowNull: false,
@@ -51,7 +51,7 @@ const RecipeIngredients = sequelize.define('Recipe_Ingredients', {
     recipe_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'User_Recipes',
+            model: 'user_recipes',
         },
         allowNull: false,
         onDelete: 'CASCADE',
@@ -59,7 +59,7 @@ const RecipeIngredients = sequelize.define('Recipe_Ingredients', {
     ingredient_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'Ingredients',
+            model: 'ingredients',
         },
         allowNull: true,
         onDelete: 'CASCADE',
@@ -75,7 +75,7 @@ const RecipeIngredients = sequelize.define('Recipe_Ingredients', {
     },
 });
 
-const RecipeCoffees = sequelize.define('Recipe_Coffees', {
+const RecipeCoffees = sequelize.define('recipe_coffees', {
     id: {
         type: DataTypes.BIGINT,
         allowNull: false,
@@ -85,7 +85,7 @@ const RecipeCoffees = sequelize.define('Recipe_Coffees', {
     recipe_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'User_Recipes',
+            model: 'user_recipes',
         },
         allowNull: false,
         onDelete: 'CASCADE',

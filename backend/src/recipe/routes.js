@@ -1,8 +1,9 @@
 import express from 'express';
 import { Sequelize } from 'sequelize';
-// import { Op } from 'sequelize';
+import { Op } from 'sequelize';
 
 import Ingredients from '#models/ingredient';
+import Users from '#models/user';
 import { UserRecipes, RecipeIngredients, RecipeCoffees } from './model.js';
 import { verifyToken } from '#utils/token.js';
 import { cleanString } from '#utils/common.js';
@@ -102,16 +103,83 @@ router.get('/myRecipes', verifyToken, async (req, res) => {
             where: {
                 user_id: userId
             }
-        });
+        })
         res.send(recipeList);
     } catch (err) {
         res.sendStatus(500);
     }
 });
 
-// View recipe
-router.get('/viewMyRecipe', verifyToken, async (req, res) => {
+// Helper function to get recipe
+async function getRecipe(recipeId, isMy = false, userId) {
+    const findCondition = isMy ? [
+        {id: recipeId},
+        {user_id: userId}
+    ] : [
+        {private: false},
+        {id: recipeId}
+    ]
+
+    const recipe = await UserRecipes.findOne({
+        include: [
+            {
+                model: RecipeIngredients,
+                attributes: {
+                    exclude: [
+                        'id',
+                        'recipe_id',
+                    ]
+                },
+                include: {
+                    model: Ingredients,
+                    attributes: ['name']
+                }
+            },
+            {
+                model: RecipeCoffees,
+                attributes: {
+                    exclude: [
+                        'id',
+                        'recipe_id',
+                    ]
+                }
+            },
+        ],
+        where: {
+            [Op.and]: findCondition
+        }
+    });
     
+    if (recipe === null && !isMy) {
+        throw new Error('This recipe is private');
+    }
+
+    return recipe;
+}
+
+// View my recipe
+router.get('/viewMyRecipe', verifyToken, async (req, res) => {
+    const recipeId = req.query.recipeId;
+    try {
+        res.send(await getRecipe(recipeId, true, req.userId));
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+})
+
+// View other user recipe
+router.get('/viewUserRecipe', async (req, res) => {
+    const recipeId = req.query.recipeId;
+    try {
+        res.send(await getRecipe(recipeId));
+    } catch (err) {
+        if (err.message === 'This recipe is private') {
+            res.status(403);
+        } else {
+            res.status(500);
+        }
+        res.send(err.message);
+    }
 })
 
 // Deleting a recipe
