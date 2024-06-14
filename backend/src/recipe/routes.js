@@ -94,8 +94,29 @@ router.post('/create', verifyToken, async (req, res) => {
     return;
 });
 
+// Lists all recipe for user
+router.get('/myRecipes', verifyToken, async (req, res) => {
+    const userId = req.userId;
+    try {
+        const recipeList = await UserRecipes.findAll({
+            where: {
+                user_id: userId
+            }
+        });
+        res.send(recipeList);
+    } catch (err) {
+        res.sendStatus(500);
+    }
+});
+
+// View recipe
+router.get('/viewMyRecipe', verifyToken, async (req, res) => {
+    
+})
+
 // Deleting a recipe
 
 // Modify a recipe
+router.patch('/update')
 
 export default router;

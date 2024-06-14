@@ -35,6 +35,10 @@ const UserRecipes = sequelize.define('User_Recipes', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    private: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    }
 });
 
 const RecipeIngredients = sequelize.define('Recipe_Ingredients', {
