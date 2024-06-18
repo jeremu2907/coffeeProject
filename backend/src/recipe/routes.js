@@ -96,7 +96,7 @@ router.post('/create', verifyToken, async (req, res) => {
 });
 
 // Lists all recipe for user
-router.get('/myRecipes', verifyToken, async (req, res) => {
+router.get('/my-recipe', verifyToken, async (req, res) => {
     const userId = req.userId;
     try {
         const recipeList = await UserRecipes.findAll({
@@ -158,7 +158,7 @@ async function getRecipe(recipeId, isMy = false, userId) {
 }
 
 // View my recipe
-router.get('/viewMyRecipe', verifyToken, async (req, res) => {
+router.get('/view-my-recipe', verifyToken, async (req, res) => {
     const recipeId = req.query.recipeId;
     try {
         res.send(await getRecipe(recipeId, true, req.userId));
@@ -168,7 +168,7 @@ router.get('/viewMyRecipe', verifyToken, async (req, res) => {
 })
 
 // View other user recipe
-router.get('/viewUserRecipe', async (req, res) => {
+router.get('/view-recipe', async (req, res) => {
     const recipeId = req.query.recipeId;
     try {
         res.send(await getRecipe(recipeId));
@@ -185,6 +185,48 @@ router.get('/viewUserRecipe', async (req, res) => {
 // Deleting a recipe
 
 // Modify a recipe
-router.patch('/update')
+router.patch('/update', verifyToken, async (req, res) => {
+    const userId = req.userId;
+    const data = req.body;
+
+    const recipeId = data.recipeId;
+    const ingredientList = data.ingredientList ?? [];
+    const coffeeList = data.coffeeList ?? [];
+
+    try {
+        let recipeIngredients = await RecipeIngredients.findAll({
+            include: {
+                model: Ingredients,
+                attributes: ['name']
+            },
+            where: {
+                recipe_id: recipeId
+            },
+            attributes: []
+        });
+
+        recipeIngredients = new Set(recipeIngredients.map(ingred => ingred.ingredient.name));
+        console.log(recipeIngredients);
+        const updatedIngreds = new Set(ingredientList.map(ingred => cleanString(ingred.name)));
+        console.log(updatedIngreds);
+        const ingredsToDelete = recipeIngredients.difference(updatedIngreds);
+        console.log(ingredsToDelete)
+
+
+        if (recipeIngredients.length === 0) {
+            throw new Error('Recipe not found')
+        }
+
+        res.send([...ingredsToDelete]);
+    } catch (err) {
+        if (err.message === 'Recipe not found') {
+            res.status(404);
+        } else {
+            res.status(500);
+        }
+        res.send(err.message);
+    }
+    return;
+})
 
 export default router;
