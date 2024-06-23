@@ -194,7 +194,7 @@ router.patch('/update', verifyToken, async (req, res) => {
     const coffeeList = data.coffeeList ?? [];
 
     try {
-        let recipeIngredients = await RecipeIngredients.findAll({
+        const oldRecipeIngredients = await RecipeIngredients.findAll({
             include: {
                 model: Ingredients,
                 attributes: ['name']
@@ -202,22 +202,35 @@ router.patch('/update', verifyToken, async (req, res) => {
             where: {
                 recipe_id: recipeId
             },
-            attributes: []
+            attributes: ['id']
         });
 
-        recipeIngredients = new Set(recipeIngredients.map(ingred => ingred.ingredient.name));
-        console.log(recipeIngredients);
-        const updatedIngreds = new Set(ingredientList.map(ingred => cleanString(ingred.name)));
-        console.log(updatedIngreds);
-        const ingredsToDelete = recipeIngredients.difference(updatedIngreds);
-        console.log(ingredsToDelete)
+        // Gets ingredients to be removed by name
+        const recipeIngredients = new Set(oldRecipeIngredients.map(ingred => ingred.ingredient.name));
+        const newIngredients = new Set(ingredientList.map(ingred => cleanString(ingred.name)));
+        const ingredsToDelete = [...recipeIngredients.difference(newIngredients)];
 
+        // Get ids of ingredients to remove from recipe
+        const deleteIngredientIdList = oldRecipeIngredients.filter(ingredObj =>
+            ingredsToDelete.includes(ingredObj.ingredient.name)
+        ).map(ingredObj => ingredObj.id);
+
+        const promises = [];
+        const deletePromises = RecipeIngredients.destroy({
+            where:
+                {
+                    id: deleteIngredientIdList
+                }
+        });
+        promises.push(deletePromises);
+
+        await Promise.all(promises);
 
         if (recipeIngredients.length === 0) {
             throw new Error('Recipe not found')
         }
 
-        res.send([...ingredsToDelete]);
+        res.send();
     } catch (err) {
         if (err.message === 'Recipe not found') {
             res.status(404);
