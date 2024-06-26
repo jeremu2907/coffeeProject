@@ -183,6 +183,19 @@ router.get('/view-recipe', async (req, res) => {
 })
 
 // Deleting a recipe
+router.delete('/delete', verifyToken, async (req, res) => {
+    const recipeId = req.query.recipeId;
+    try {
+        await UserRecipes.destroy({
+            where: {
+                id: recipeId
+            }
+        });
+        res.sendStatus(204);
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+})
 
 // Modify a recipe
 router.patch('/update', verifyToken, async (req, res) => {
