@@ -4,7 +4,7 @@ import sequelize from '#sql';
 import User from '#models/user';
 import { UNITS, BREWMETHOD, ROASTLEVEL } from '#utils/dbValues.js';
 
-const UserRecipes = sequelize.define('User_Recipes', {
+const UserRecipes = sequelize.define('user_recipes', {
     id: {
         type: DataTypes.BIGINT,
         allowNull: false,
@@ -14,7 +14,7 @@ const UserRecipes = sequelize.define('User_Recipes', {
     user_id: {
         type: DataTypes.UUID,
         references: {
-            model: 'Users',
+            model: 'users',
         },
         allowNull: false,
         onDelete: 'CASCADE',
@@ -35,9 +35,13 @@ const UserRecipes = sequelize.define('User_Recipes', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    private: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
 });
 
-const RecipeIngredients = sequelize.define('Recipe_Ingredients', {
+const RecipeIngredients = sequelize.define('recipe_ingredients', {
     id: {
         type: DataTypes.BIGINT,
         allowNull: false,
@@ -47,7 +51,7 @@ const RecipeIngredients = sequelize.define('Recipe_Ingredients', {
     recipe_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'User_Recipes',
+            model: 'user_recipes',
         },
         allowNull: false,
         onDelete: 'CASCADE',
@@ -55,7 +59,7 @@ const RecipeIngredients = sequelize.define('Recipe_Ingredients', {
     ingredient_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'Ingredients',
+            model: 'ingredients',
         },
         allowNull: true,
         onDelete: 'CASCADE',
@@ -71,7 +75,7 @@ const RecipeIngredients = sequelize.define('Recipe_Ingredients', {
     },
 });
 
-const RecipeCoffees = sequelize.define('Recipe_Coffees', {
+const RecipeCoffees = sequelize.define('recipe_coffees', {
     id: {
         type: DataTypes.BIGINT,
         allowNull: false,
@@ -81,7 +85,7 @@ const RecipeCoffees = sequelize.define('Recipe_Coffees', {
     recipe_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'User_Recipes',
+            model: 'user_recipes',
         },
         allowNull: false,
         onDelete: 'CASCADE',
@@ -89,11 +93,23 @@ const RecipeCoffees = sequelize.define('Recipe_Coffees', {
     brew_method: {
         type: DataTypes.STRING,
         values: BREWMETHOD,
+        validate: {
+            isIn: {
+                args: [BREWMETHOD],
+                msg: 'Invalid brew method',
+            },
+        },
         allowNull: false,
     },
     coffee_roast_level: {
         type: DataTypes.STRING,
         values: ROASTLEVEL,
+        validate: {
+            isIn: {
+                args: [ROASTLEVEL],
+                msg: 'Invalid roast level',
+            },
+        },
         allowNull: false,
     },
     ratio_liquid_to_dry: {
@@ -101,9 +117,16 @@ const RecipeCoffees = sequelize.define('Recipe_Coffees', {
         allowNull: true,
     },
     bean_weight: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         description: 'in grams',
         allowNull: true,
+        validate: {
+            nonNegative(val) {
+                if (parseFloat(val) < 0) {
+                    throw new Error('Bean weight must be non-negative or empty');
+                }
+            },
+        },
     },
 });
 
