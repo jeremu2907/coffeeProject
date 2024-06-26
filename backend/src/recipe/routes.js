@@ -3,7 +3,6 @@ import { Sequelize } from 'sequelize';
 import { Op } from 'sequelize';
 
 import Ingredients from '#models/ingredient';
-import Users from '#models/user';
 import { UserRecipes, RecipeIngredients, RecipeCoffees } from './model.js';
 import { verifyToken } from '#utils/token.js';
 import { cleanString } from '#utils/common.js';
@@ -32,7 +31,7 @@ router.post('/create', verifyToken, async (req, res) => {
             subtitle: data.subtitle ?? null,
             description: data.description ?? null,
         }, {
-            transaction: transaction
+            transaction: transaction,
         });
 
         const promises = [];
@@ -54,8 +53,8 @@ router.post('/create', verifyToken, async (req, res) => {
                 RecipeIngredientList,
                 {
                     validate: true,
-                    transaction: transaction
-                }
+                    transaction: transaction,
+                },
             );
             promises.push(promise);
         }
@@ -75,8 +74,8 @@ router.post('/create', verifyToken, async (req, res) => {
                 RecipeCoffeeList,
                 {
                     validate: true,
-                    transaction: transaction
-                }
+                    transaction: transaction,
+                },
             );
             promises.push(promise);
         }
@@ -85,7 +84,7 @@ router.post('/create', verifyToken, async (req, res) => {
         await transaction.commit();
         res.sendStatus(201);
     } catch (err) {
-        await transaction.rollback()
+        await transaction.rollback();
         if (err instanceof Sequelize.AggregateError) {
             res.status(400).send(err.errors[0].errors.errors[0].message);
         } else {
@@ -101,12 +100,12 @@ router.get('/my-recipes', verifyToken, async (req, res) => {
     try {
         const recipeList = await UserRecipes.findAll({
             where: {
-                user_id: userId
-            }
-        })
+                user_id: userId,
+            },
+        });
         res.send(recipeList);
     } catch (err) {
-        res.sendStatus(500);
+        res.status(500).send(err.message);
     }
 });
 
@@ -117,26 +116,26 @@ router.get('/user-recipes', async (req, res) => {
         const recipeList = await UserRecipes.findAll({
             where: {
                 [Op.and]: [
-                    {user_id: userId},
-                    {private: false}
-                ]
-            }
-        })
+                    { user_id: userId },
+                    { private: false },
+                ],
+            },
+        });
         res.send(recipeList);
     } catch (err) {
-        res.sendStatus(500);
+        res.status(500).send(err.message);
     }
-})
+});
 
 // Helper function to get recipe
 async function getRecipe(recipeId, isMy = false, userId) {
     const findCondition = isMy ? [
-        {id: recipeId},
-        {user_id: userId}
+        { id: recipeId },
+        { user_id: userId },
     ] : [
-        {private: false},
-        {id: recipeId}
-    ]
+        { private: false },
+        { id: recipeId },
+    ];
 
     const recipe = await UserRecipes.findOne({
         include: [
@@ -146,12 +145,12 @@ async function getRecipe(recipeId, isMy = false, userId) {
                     exclude: [
                         'id',
                         'recipe_id',
-                    ]
+                    ],
                 },
                 include: {
                     model: Ingredients,
-                    attributes: ['name']
-                }
+                    attributes: ['name'],
+                },
             },
             {
                 model: RecipeCoffees,
@@ -159,15 +158,15 @@ async function getRecipe(recipeId, isMy = false, userId) {
                     exclude: [
                         'id',
                         'recipe_id',
-                    ]
-                }
+                    ],
+                },
             },
         ],
         where: {
-            [Op.and]: findCondition
-        }
+            [Op.and]: findCondition,
+        },
     });
-    
+
     if (recipe === null && !isMy) {
         throw new Error('This recipe is private');
     }
@@ -183,7 +182,7 @@ router.get('/view-my-recipe', verifyToken, async (req, res) => {
     } catch (err) {
         res.status(500).send(err.message);
     }
-})
+});
 
 // View other user recipe
 router.get('/view-recipe', async (req, res) => {
@@ -198,7 +197,7 @@ router.get('/view-recipe', async (req, res) => {
         }
         res.send(err.message);
     }
-})
+});
 
 // Deleting a recipe
 router.delete('/delete', verifyToken, async (req, res) => {
@@ -206,14 +205,14 @@ router.delete('/delete', verifyToken, async (req, res) => {
     try {
         await UserRecipes.destroy({
             where: {
-                id: recipeId
-            }
+                id: recipeId,
+            },
         });
         res.sendStatus(204);
     } catch (err) {
         res.status(500).send(err.message);
     }
-})
+});
 
 // Modify a recipe
 router.patch('/update', verifyToken, async (req, res) => {
@@ -228,14 +227,17 @@ router.patch('/update', verifyToken, async (req, res) => {
     try {
         await RecipeIngredients.destroy({
             where: {
-                recipe_id: recipeId
-            }
+                recipe_id: recipeId,
+            },
         });
 
         await RecipeCoffees.destroy({
             where: {
-                recipe_id: recipeId
-            }
+                [Op.and]: [
+                    { recipe_id: recipeId },
+                    { user_id: userId },
+                ],
+            },
         });
 
         const promises = [];
@@ -257,8 +259,8 @@ router.patch('/update', verifyToken, async (req, res) => {
                 RecipeIngredientList,
                 {
                     validate: true,
-                    transaction: transaction
-                }
+                    transaction: transaction,
+                },
             );
             promises.push(promise);
         }
@@ -278,8 +280,8 @@ router.patch('/update', verifyToken, async (req, res) => {
                 RecipeCoffeeList,
                 {
                     validate: true,
-                    transaction: transaction
-                }
+                    transaction: transaction,
+                },
             );
             promises.push(promise);
         }
@@ -288,7 +290,7 @@ router.patch('/update', verifyToken, async (req, res) => {
         await transaction.commit();
         res.sendStatus(201);
     } catch (err) {
-        await transaction.rollback()
+        await transaction.rollback();
         if (err instanceof Sequelize.AggregateError) {
             res.status(400).send(err.errors[0].errors.errors[0].message);
         } else {
@@ -296,6 +298,6 @@ router.patch('/update', verifyToken, async (req, res) => {
         }
     }
     return;
-})
+});
 
 export default router;

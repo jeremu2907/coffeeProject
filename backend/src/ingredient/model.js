@@ -23,6 +23,6 @@ model.hasMany(RecipeIngredients, {
 RecipeIngredients.belongsTo(model, {
     foreignKey: 'ingredient_id',
     onDelete: 'CASCADE',
-})
+});
 
 export default model;

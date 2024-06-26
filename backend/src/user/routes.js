@@ -36,7 +36,7 @@ router.post('/signup', async (req, res) => {
         });
         res.send(req.body);
     } catch (err) {
-        res.sendStatus(500);
+        res.status(500).send(err.message);
     }
     return;
 });
@@ -63,7 +63,7 @@ router.post('/signin', async (req, res) => {
         }
 
         res.send(generateToken(user.id));
-    } catch (err) {
+    } catch {
         res.status(404).send('User not found');
     }
     return;

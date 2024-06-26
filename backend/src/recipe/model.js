@@ -37,8 +37,8 @@ const UserRecipes = sequelize.define('user_recipes', {
     },
     private: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false
-    }
+        defaultValue: false,
+    },
 });
 
 const RecipeIngredients = sequelize.define('recipe_ingredients', {
@@ -96,8 +96,8 @@ const RecipeCoffees = sequelize.define('recipe_coffees', {
         validate: {
             isIn: {
                 args: [BREWMETHOD],
-                msg: 'Invalid brew method'
-            }
+                msg: 'Invalid brew method',
+            },
         },
         allowNull: false,
     },
@@ -107,8 +107,8 @@ const RecipeCoffees = sequelize.define('recipe_coffees', {
         validate: {
             isIn: {
                 args: [ROASTLEVEL],
-                msg: 'Invalid roast level'
-            }
+                msg: 'Invalid roast level',
+            },
         },
         allowNull: false,
     },
@@ -125,7 +125,7 @@ const RecipeCoffees = sequelize.define('recipe_coffees', {
                 if (parseFloat(val) < 0) {
                     throw new Error('Bean weight must be non-negative or empty');
                 }
-            }
+            },
         },
     },
 });
