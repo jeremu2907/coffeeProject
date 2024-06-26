@@ -85,6 +85,7 @@ router.post('/create', verifyToken, async (req, res) => {
         res.sendStatus(201);
     } catch (err) {
         await transaction.rollback();
+        console.error(err.message);
         if (err instanceof Sequelize.AggregateError) {
             res.status(400).send(err.errors[0].errors.errors[0].message);
         } else {
@@ -105,6 +106,7 @@ router.get('/my-recipes', verifyToken, async (req, res) => {
         });
         res.send(recipeList);
     } catch (err) {
+        console.error(err.message);
         res.status(500).send(err.message);
     }
 });
@@ -123,6 +125,7 @@ router.get('/user-recipes', async (req, res) => {
         });
         res.send(recipeList);
     } catch (err) {
+        console.error(err.message);
         res.status(500).send(err.message);
     }
 });
@@ -180,6 +183,7 @@ router.get('/view-my-recipe', verifyToken, async (req, res) => {
     try {
         res.send(await getRecipe(recipeId, true, req.userId));
     } catch (err) {
+        console.error(err.message);
         res.status(500).send(err.message);
     }
 });
@@ -190,6 +194,7 @@ router.get('/view-recipe', async (req, res) => {
     try {
         res.send(await getRecipe(recipeId));
     } catch (err) {
+        console.error(err.message);
         if (err.message === 'This recipe is private') {
             res.status(403);
         } else {
@@ -210,6 +215,7 @@ router.delete('/delete', verifyToken, async (req, res) => {
         });
         res.sendStatus(204);
     } catch (err) {
+        console.error(err.message);
         res.status(500).send(err.message);
     }
 });
@@ -291,6 +297,7 @@ router.patch('/update', verifyToken, async (req, res) => {
         res.sendStatus(201);
     } catch (err) {
         await transaction.rollback();
+        console.error(err.message);
         if (err instanceof Sequelize.AggregateError) {
             res.status(400).send(err.errors[0].errors.errors[0].message);
         } else {
