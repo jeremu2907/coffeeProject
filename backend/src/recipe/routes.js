@@ -96,7 +96,7 @@ router.post('/create', verifyToken, async (req, res) => {
 });
 
 // Lists all recipe for user
-router.get('/my-recipe', verifyToken, async (req, res) => {
+router.get('/my-recipes', verifyToken, async (req, res) => {
     const userId = req.userId;
     try {
         const recipeList = await UserRecipes.findAll({
@@ -192,52 +192,77 @@ router.patch('/update', verifyToken, async (req, res) => {
     const recipeId = data.recipeId;
     const ingredientList = data.ingredientList ?? [];
     const coffeeList = data.coffeeList ?? [];
+    const transaction = await sequelize.transaction();
 
     try {
-        const oldRecipeIngredients = await RecipeIngredients.findAll({
-            include: {
-                model: Ingredients,
-                attributes: ['name']
-            },
+        await RecipeIngredients.destroy({
             where: {
                 recipe_id: recipeId
-            },
-            attributes: ['id']
+            }
         });
 
-        // Gets ingredients to be removed by name
-        const recipeIngredients = new Set(oldRecipeIngredients.map(ingred => ingred.ingredient.name));
-        const newIngredients = new Set(ingredientList.map(ingred => cleanString(ingred.name)));
-        const ingredsToDelete = [...recipeIngredients.difference(newIngredients)];
-
-        // Get ids of ingredients to remove from recipe
-        const deleteIngredientIdList = oldRecipeIngredients.filter(ingredObj =>
-            ingredsToDelete.includes(ingredObj.ingredient.name)
-        ).map(ingredObj => ingredObj.id);
+        await RecipeCoffees.destroy({
+            where: {
+                recipe_id: recipeId
+            }
+        });
 
         const promises = [];
-        const deletePromises = RecipeIngredients.destroy({
-            where:
+
+        if (ingredientList.length > 0) {
+            const RecipeIngredientList = await Promise.all(ingredientList.map(async item => {
+                const [ingredient] = await Ingredients.findOrCreate({
+                    where: { name: cleanString(item.name) },
+                });
+                return {
+                    recipe_id: recipeId,
+                    ingredient_id: ingredient.id,
+                    ingredient_amount: item.amount,
+                    ingredient_unit: item.unit,
+                };
+            }));
+
+            const promise = RecipeIngredients.bulkCreate(
+                RecipeIngredientList,
                 {
-                    id: deleteIngredientIdList
+                    validate: true,
+                    transaction: transaction
                 }
-        });
-        promises.push(deletePromises);
+            );
+            promises.push(promise);
+        }
+
+        if (coffeeList.length > 0) {
+            const RecipeCoffeeList = await Promise.all(coffeeList.map(async item => {
+                return {
+                    recipe_id: recipeId,
+                    brew_method: item.brew_method,
+                    coffee_roast_level: item.roast_level,
+                    ratio_liquid_to_dry: item.ratio_liquid_to_dry ?? null,
+                    bean_weight: item.bean_weight ?? null,
+                };
+            }));
+
+            const promise = RecipeCoffees.bulkCreate(
+                RecipeCoffeeList,
+                {
+                    validate: true,
+                    transaction: transaction
+                }
+            );
+            promises.push(promise);
+        }
 
         await Promise.all(promises);
-
-        if (recipeIngredients.length === 0) {
-            throw new Error('Recipe not found')
-        }
-
-        res.send();
+        await transaction.commit();
+        res.sendStatus(201);
     } catch (err) {
-        if (err.message === 'Recipe not found') {
-            res.status(404);
+        await transaction.rollback()
+        if (err instanceof Sequelize.AggregateError) {
+            res.status(400).send(err.errors[0].errors.errors[0].message);
         } else {
-            res.status(500);
+            res.sendStatus(500);
         }
-        res.send(err.message);
     }
     return;
 })
