@@ -110,6 +110,24 @@ router.get('/my-recipes', verifyToken, async (req, res) => {
     }
 });
 
+// Lists all recipe for other users
+router.get('/user-recipes', async (req, res) => {
+    const userId = req.userId;
+    try {
+        const recipeList = await UserRecipes.findAll({
+            where: {
+                [Op.and]: [
+                    {user_id: userId},
+                    {private: false}
+                ]
+            }
+        })
+        res.send(recipeList);
+    } catch (err) {
+        res.sendStatus(500);
+    }
+})
+
 // Helper function to get recipe
 async function getRecipe(recipeId, isMy = false, userId) {
     const findCondition = isMy ? [
