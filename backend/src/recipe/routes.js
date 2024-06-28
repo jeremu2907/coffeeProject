@@ -222,7 +222,6 @@ router.delete('/delete', verifyToken, async (req, res) => {
 
 // Modify a recipe
 router.patch('/update', verifyToken, async (req, res) => {
-    const userId = req.userId;
     const data = req.body;
 
     const recipeId = data.recipeId;
@@ -239,10 +238,7 @@ router.patch('/update', verifyToken, async (req, res) => {
 
         await RecipeCoffees.destroy({
             where: {
-                [Op.and]: [
-                    { recipe_id: recipeId },
-                    { user_id: userId },
-                ],
+                recipe_id: recipeId,
             },
         });
 

@@ -64,7 +64,7 @@ router.post('/signin', async (req, res) => {
         }
 
         res.send(generateToken(user.id));
-    } catch(err) {
+    } catch (err) {
         console.error(err.message);
         res.status(404).send('User not found');
     }
