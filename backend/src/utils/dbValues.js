@@ -10,6 +10,7 @@ export const UNITS = [
     'ml', // milliliter
     'ounce', // ounce
     'piece', // piece
+    'pump', // pump
     'qt', // quart
     'slice', // slice
     'Tbsp', // tablespoon
