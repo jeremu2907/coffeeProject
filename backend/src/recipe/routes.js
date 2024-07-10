@@ -204,6 +204,20 @@ router.get('/view-recipe', async (req, res) => {
     }
 });
 
+// Get featured recipes
+router.get('/featured', async (req, res) => {
+    try {
+        const recipes = await UserRecipes.findAll({
+            order: Sequelize.literal('random()'),
+            limit: 10,
+        });
+        res.send(recipes);
+    } catch (err) {
+        console.error(err.message);
+        res.send(err.message);
+    }
+});
+
 // Deleting a recipe
 router.delete('/delete', verifyToken, async (req, res) => {
     const recipeId = req.query.recipeId;
